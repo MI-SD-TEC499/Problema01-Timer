@@ -1,7 +1,10 @@
-# Problema01-Timer
+# Problema 01 - Timer
+# Integrantes: Daniel Costa, Diego Silva e Thiago Menezes
 
 # 1 - Introdução
+Com o avanço da tecnologia, inclusive a de construção de transistores, tem sido possibilitado cada vez mais a construção de computadores com menor tamanho, melhor desempenho, incluindo energético, e menor custo. Sistemas embarcados em microcontroladores são utilizados para diversas tarefas de automação e na chamada _Internet of Things_ (IoT).
 
+O problema apresentado a seguir consistiu no desenvolvimento de um temporizador em um microcontrolador Raspberry Pi Zero, utilizando uma linguagem de montagem com arquitetura ARM. O temporizador deve contar com funções básicas de controle do tempo, sendo possível parar e iniciar a temporização, assim como reiniciá-la a partir do tempo inicial.
 
 # 2 - Desenvolvimento
 ![SleepImg](https://user-images.githubusercontent.com/111393549/191847559-c0fcf7c3-8f04-4661-8892-48458bcd729f.png)
