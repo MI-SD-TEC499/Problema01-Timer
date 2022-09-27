@@ -7,11 +7,11 @@ Com o avanço da tecnologia, inclusive a de construção de transistores, tem si
 O problema apresentado a seguir consistiu no desenvolvimento de um temporizador em um microcontrolador Raspberry Pi Zero, utilizando uma linguagem de montagem com arquitetura ARM. O temporizador deve contar com funções básicas de controle do tempo, sendo possível parar e iniciar a temporização, assim como reiniciá-la a partir do tempo inicial.
 
 # 2 - Ambiente e Ferramentas
-** 2.1 - Ambiente
+## 2.1 - Ambiente
 O problema foi desenvolvido para funcionar em uma Raspberry Pi Zero, utilizando como periférico de saída um display LCD Hitachi HD44780U (LCD-II) de 16x2. Essa Raspberry possui arquitetura ARMv6 de 32bits.
 Para a ambientação com linguagem de montagem, foi utilizada a plataforma web [CPULator](https://cpulator.01xz.net/?sys=arm) na versão de arquitetura ARMv7.
 Para a emulação do código fora do laboratório, foi utilizado o software QEMU, usando o kernel 4.4.34-jessie e com uma imagem raspbian-jessie para o sistema operacional, ambos disponíveis nesse [repositório](https://github.com/dhruvvyas90/qemu-rpi-kernel).
-** 2.2 - Outras Ferramentas
+## 2.2 - Outras Ferramentas
 Para desenvolvimento do código foram utilizados diferentes editores de texto, como o GNU Nano e o Visual Studio Code.
 
 # 3 - Desenvolvimento
