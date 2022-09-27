@@ -21,8 +21,12 @@ Após um pino ter sua função definida, ele vai ser ligado de acordo com a nece
 
 ![mappingImg](https://user-images.githubusercontent.com/111393549/191851132-b12fac75-b10c-42de-ac52-c81f53d18e7f.png)
 
-Assim que o programa inicia fazemos o mapeamento de memória, onde recebemos um endereço virtual(com base no endereço físico) para os componentes que vão ser utilizados : A princípio acessamos o diretório “dev/mem” , utilizando a syscall “sys_open”, os valores carregados nos registradores servem para encontrar o arquivo correto, depois o “SVC 0” executa a syscall.
-Depois armazenamos o endereço base no R5, e utilizamos algumas constantes como parâmetros, “prot_read” e “prot_write” que permitem a leitura e  escrita, “map_shared” garante que outros processos saibam que aquela região está sendo mapeada, e "pagelen" é referente ao tamanho separado para a memória, por fim passamos o valor da syscall “sys_map” para o R7, e iniciamos o mapeamento chamando novamente o “SVC 0”.
+Assim que o programa inicia fazemos o mapeamento de memória, onde recebemos um endereço virtual(com base no endereço físico) para os componentes que vão ser utilizados : A princípio acessamos o diretório “dev/mem”  depois, utilizando a syscall “sys_open”, os valores carregados nos registradores servem para encontrar o arquivo correto, depois o “SVC 0” executa a syscall.
+Armazenamos então o endereço base no R5, e utilizamos algumas constantes como parâmetros, “prot_read” e “prot_write” que permitem a leitura e escrita, “map_shared” garante que outros processos saibam que aquela região está sendo mapeada, e "pagelen" é referente ao tamanho separado para a memória, por fim passamos o valor da syscall “sys_map” para o R7, e iniciamos o mapeamento chamando novamente o “SVC 0”.
 
+![pinsExample](https://user-images.githubusercontent.com/111393549/192638168-08ac63f5-ca2e-4e39-a8ae-463694343cfb.png)
+
+Nós acessamos os periféricos da placa através da GPIO(General purpose input output), mas para que os pinos utilizados funcionem, é necessário valores especificos, usando o pin25(RS) como exemplo , associamos a "pin25" os valores "8" para utilizarmos o GPSEL2 que controla os pinos 20-29, depois enviamos
+um "15", que representa o primeiro dos três bits do pin25 (são 32 bits para o GPSEL2, sendo três para cada pino controlado).
 
 
