@@ -259,7 +259,7 @@
 	GPIOTurnOff pin20 @Off no DB6
 	GPIOTurnOff pin16 @Off no DB5
 	GPIOTurnOff pin12 @Off no DB4
-	GPIOTurnOff pin1
+	GPIOTurnOff pin1 @Off no Enable
 
 	GPIOTurnOff pin1 @Off no Enable
 	GPIOTurnOff pin25 @Off no rs
