@@ -2,9 +2,9 @@
 .equ pagelen, 4096		@Tamanho da memória
 .equ setregoffset, 28		@Offset para o registrador GPSET.
 .equ clrregoffset, 40		@Offset para o registrador GPCLR.
-.equ prot_read, 1		@Paramêtro para o sys_map.
-.equ prot_write, 2		@Paramêtro para o sys_map.
-.equ map_shared, 1		@Paramêtro para o sys_map.
+.equ prot_read, 1		@Parâmetro para o sys_map.
+.equ prot_write, 2		@Parâmetro para o sys_map.
+.equ map_shared, 1		@Parâmetro para o sys_map.
 .equ sys_open, 5		@Syscall que para abertura de arquivos.
 .equ sys_map, 192		@Syscall para o mapeamento.
 .equ nano_sleep, 162
@@ -13,8 +13,8 @@
 .global _start
 
 .macro nanoSleep time		@Macro responsavel por definir um intervalo de tempo
-        LDR R0,=timespecsec	@Paramêtro fixo para o nano_sleep.
-        LDR R1,=\time		@Paramêtro que define o tempo do delay.
+        LDR R0,=timespecsec	@Parâmetro fixo para o nano_sleep.
+        LDR R1,=\time		@Parâmetro que define o tempo do delay.
         MOV R7, #nano_sleep	@Passa o valor da sys_map para o R7(registrador para chamada de sycalls).
         SVC 0			@Executa a syscall.
 .endm
@@ -362,8 +362,8 @@
 
 _start:		
         LDR R0, = fileName		@Carrega o endereço.
-        MOV R1, #0x1b0			@Parametro para o sys_open.
-        ORR R1, #0x006			@Parametro para o sys_open.
+        MOV R1, #0x1b0			@Parâmetro para o sys_open.
+        ORR R1, #0x006			@Parâmetro para o sys_open.
         MOV R2, R1			@Passando valor retornado para R2.
         MOV R7, #sys_open		@Passa o valor de sys_open para o r7.
         SVC 0				@Executa a syscall.
