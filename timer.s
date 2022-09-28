@@ -1,22 +1,22 @@
 
-.equ pagelen, 4096
-.equ setregoffset, 28
-.equ clrregoffset, 40
-.equ prot_read, 1
-.equ prot_write, 2
-.equ map_shared, 1
-.equ sys_open, 5
-.equ sys_map, 192
+.equ pagelen, 4096		@Tamanho da memória
+.equ setregoffset, 28		@Offset para o registrador GPSET.
+.equ clrregoffset, 40		@Offset para o registrador GPCLR.
+.equ prot_read, 1		@Paramêtro para o sys_map.
+.equ prot_write, 2		@Paramêtro para o sys_map.
+.equ map_shared, 1		@Paramêtro para o sys_map.
+.equ sys_open, 5		@Syscall que para abertura de arquivos.
+.equ sys_map, 192		@Syscall para o mapeamento.
 .equ nano_sleep, 162
 .equ level, 0x034
 
 .global _start
 
-.macro nanoSleep time
-        LDR R0,=timespecsec
-        LDR R1,=\time
-        MOV R7, #nano_sleep
-        SVC 0
+.macro nanoSleep time		@Macro responsavel por definir um intervalo de tempo
+        LDR R0,=timespecsec	@Paramêtro fixo para o nano_sleep.
+        LDR R1,=\time		@Paramêtro que define o tempo do delay.
+        MOV R7, #nano_sleep	@Passa o valor da sys_map para o R7(registrador para chamada de sycalls).
+        SVC 0			@Executa a syscall.
 .endm
 
 .macro GPIODirectionIn pin
@@ -361,23 +361,23 @@
 .endm
 
 _start:		
-        LDR R0, = fileName
-        MOV R1, #0x1b0
-        ORR R1, #0x006
-        MOV R2, R1
-        MOV R7, #sys_open
-        SVC 0
-        MOVS R4, R0
-
-        LDR R5, =gpioaddr
-        LDR R5, [R5]
-        MOV R1, #pagelen
-        MOV R2, #(prot_read + prot_write)
-        MOV R3, #map_shared
-        MOV R0, #0
-        MOV R7, #sys_map
-        SVC 0
-        MOVS R8, R0
+        LDR R0, = fileName		@Carrega o endereço.
+        MOV R1, #0x1b0			@Parametro para o sys_open.
+        ORR R1, #0x006			@Parametro para o sys_open.
+        MOV R2, R1			@Passando valor retornado para R2.
+        MOV R7, #sys_open		@Passa o valor de sys_open para o r7.
+        SVC 0				@Executa a syscall.
+        MOVS R4, R0			@Armazena o endereço no R4.
+	
+        LDR R5, =gpioaddr		@Carrega o endereço.
+        LDR R5, [R5]		
+        MOV R1, #pagelen	        @passa o valor maximo da memória.
+        MOV R2, #(prot_read + prot_write)	@Parâmetro para escrita e leitura de arquivos.
+        MOV R3, #map_shared		@Parâmetro para que outros processos saibam que a região esta sendo mapeada.
+        MOV R0, #0			@Deixa o SO escolher o endereço virtual.
+        MOV R7, #sys_map		@Passa o valor da syscall para R7.
+        SVC 0				@Executa o mapeamento.
+        MOVS R8, R0			@Armazena o endereço virtual em R8.
 
 
 	GPIODirectionOut pin6
@@ -411,15 +411,18 @@ _end:   MOV R0, #0
 	@FINALIZANDO O DECREMENTADOR
 
 .data
-second: .word 1 @definindo 1 segundo no nanosleep
-timenano: .word 0000000000 @definindo o milisegundos para o segundo passar no nanosleep
-timespecsec: .word 0 @definição do nano sleep 0s permitindo os milissegundos
-timespecnano20: .word 20000000 @chamada de nanoSleep
-timespecnano5: .word 5000000 @valor em milisegundos para lcd
-timespecnano150: .word 150000 @valor em milisegundos para LCD
-timespecnano1s: .word 999999999 @valor para delay de contador
-fileName: .asciz "/dev/mem"
-gpioaddr: .word 0x20200	
+second: .word 1 			@definindo 1 segundo no nanosleep 
+timenano: .word 0000000000 		@definindo o milisegundos para o segundo passar no nanosleep
+timespecsec: .word 0 			@definição do nano sleep 0s permitindo os milissegundos
+timespecnano20: .word 20000000 		@chamada de nanoSleep
+timespecnano5: .word 5000000 		@valor em milisegundos para lcd
+timespecnano150: .word 150000 		@valor em milisegundos para LCD
+timespecnano1s: .word 999999999 	@valor para delay de contador
+fileName: .asciz "/dev/mem"		@Endereço do do dev/mem.
+gpioaddr: .word 0x20200			@Endereço base.
+
+
+@Valores referentes ao GPSEL que controla os pinos, sendo o endereço inicial e o primeiro dos três bits de cada pino.
 pin6:	.word 0
        	.word 18
        	.word 6
