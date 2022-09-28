@@ -20,31 +20,31 @@
 .endm
 
 .macro GPIODirectionIn pin
-        LDR R2, =\pin
+        LDR R2, =\pin @ endereço das informações do pino
         LDR R2, [R2]
         LDR R1, [R8, R2]
-        LDR R3, =\pin @ address of pin table
-        ADD R3, #4 @ load amount to shift from table
-        LDR R3, [R3] @ load value of shift amt
-        MOV R0, #0b111 @ mask to clear 3 bits
-        LSL R0, R3 @ shift into position
-        BIC R1, R0 @ clear the three bits
+        LDR R3, =\pin @ endereço das informações do pino
+        ADD R3, #4 @ tamanho do shift nas informações
+        LDR R3, [R3] @ carrega o valor do shift
+        MOV R0, #0b111 @ limpa 3 bits
+        LSL R0, R3 @ dá um shift para a posição
+        BIC R1, R0 @ limpa os 3 bits
 .endm
 
 .macro GPIODirectionOut pin
-        LDR R2, =\pin
+        LDR R2, =\pin @ endereço das informações do pino
         LDR R2, [R2]
         LDR R1, [R8, R2]
-        LDR R3, =\pin @ address of pin table
-        ADD R3, #4 @ load amount to shift from table
-        LDR R3, [R3] @ load value of shift amt
-        MOV R0, #0b111 @ mask to clear 3 bits
-        LSL R0, R3 @ shift into position
-        BIC R1, R0 @ clear the three bits
+        LDR R3, =\pin @ endereço das informações do pino
+        ADD R3, #4 @ tamanho do shift nas informações
+        LDR R3, [R3] @ carrega o valor do shift
+        MOV R0, #0b111 @ limpa 3 bits
+        LSL R0, R3 @ dá um shift para a posição
+        BIC R1, R0 @ limpa os 3 bits
         MOV R0, #1 @ 1 bit to shift into pos
-        LSL R0, R3 @ shift by amount from table
-        ORR R1, R0 @ set the bit
-        STR R1, [R8, R2] @ save it to reg to do work
+        LSL R0, R3 @ dá um shift para a posição
+        ORR R1, R0 @ seta o bit
+        STR R1, [R8, R2] @ salva no registrador para utilização
 .endm
 
 .macro GPIOTurnOn pin, value
@@ -274,12 +274,8 @@
 
 .macro writeDezena
 	writeDecimal 1, 0, 0, 1
-	write9to0
-	clearLCD
 
         writeDecimal 1, 0, 0, 0
-	write9to0   
-        clearLCD
 
         writeDecimal 0, 1, 1, 1
 
@@ -299,72 +295,69 @@
 .endm
 
 .macro write9to0
-	writeDecimal 1, 0, 0, 1
+	writeDecimal 1, 0, 0, 1 @ escreve o 9
 
-	writeDecimal 1, 0, 0, 0
+	writeDecimal 1, 0, 0, 0 @ escreve o 8
 
-	writeDecimal 0, 1, 1, 1
+	writeDecimal 0, 1, 1, 1 @ escreve o 7
 
-	writeDecimal 0, 1, 1, 0
+	writeDecimal 0, 1, 1, 0 @ escreve o 6
 
-	writeDecimal 0, 1, 0, 1
+	writeDecimal 0, 1, 0, 1 @ escreve o 5
 
-	writeDecimal 0, 1, 0, 0
+	writeDecimal 0, 1, 0, 0 @ escreve o 4
 
-	writeDecimal 0, 0, 1, 1
+	writeDecimal 0, 0, 1, 1 @ escreve o 3
 
-	writeDecimal 0, 0, 1, 0
+	writeDecimal 0, 0, 1, 0 @ escreve o 2
 
-	writeDecimal 0, 0, 0, 1
+	writeDecimal 0, 0, 0, 1 @ escreve o 1
 
-	writeDecimal 0, 0, 0, 0
+	writeDecimal 0, 0, 0, 0 @ escreve o 0
 .endm
 
 .macro writeNumber
-	GPIOTurnOff pin1
-	GPIOTurnOn pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOff pin20
-	GPIOTurnOn pin16
-	GPIOTurnOn pin12
-	GPIOTurnOff pin1
+	@ Envio dos lower bits para escrever números
+	GPIOTurnOff pin1 @ Off no enable
+	GPIOTurnOn pin25 @ On no RS para escrita de dado
+	GPIOTurnOn pin1 @ On no enable para o pulso
+	GPIOTurnOff pin21 @ Off no d7
+	GPIOTurnOff pin20 @ Off no d6
+	GPIOTurnOn pin16 @ Off no d5
+	GPIOTurnOn pin12 @ Off no d4
+	GPIOTurnOff pin1 @ Off no enable para enviar os dados
 .endm
 
 .macro writeDecimal d7, d6, d5, d4
-	writeNumber
+	writeNumber @ macro que envia os bits de escrita de números
 
-	GPIOTurnOff pin1
-	GPIOTurnOn pin25
-	GPIOTurnOn pin1
-	GPIOTurnOnOff pin21, #\d7
-	GPIOTurnOnOff pin20, #\d6
-	GPIOTurnOnOff pin16, #\d5
-	GPIOTurnOnOff pin12, #\d4
-	GPIOTurnOff pin1
+	GPIOTurnOff pin1 @ Off no enable
+	GPIOTurnOn pin25 @ On no RS para escrita de dado
+	GPIOTurnOn pin1 @ On no enable para o pulso
+	GPIOTurnOnOff pin21, #\d7 @ passa o valor para o d7
+	GPIOTurnOnOff pin20, #\d6 @ passa o valor para o d6
+	GPIOTurnOnOff pin16, #\d5 @ passa o valor para o d5
+	GPIOTurnOnOff pin12, #\d4 @ passa o valor para o d4
+	GPIOTurnOff pin1 @ Off no enable para enviar os dados
 	nanoSleep timespecnano150
 	.ltorg @Quando se tem um programa muito grande é necessário utilizar essa função para que o processador não tente executar funções indevidas
 .endm
 
 .macro GPIOTurnOnOff pin, value
-	MOV R0, #clrregoffset 
-        MOV R2, #12
-        MOV R1, \value
-        MUL R5, R2, R1
-        SUB R0, R0, R5
-        MOV R2, R8
-        ADD R2, R2, R0
-        MOV R0, #1 @ 1 bit to shift into pos
-        LDR R3, =\pin @ base of pin info table
-        ADD R3, #8 @ add offset for shift amt
-        LDR R3, [R3] @ load shift from table
-        LSL R0, R3 @ do the shift
-        STR R0, [R2] @ write to the register
+	MOV R0, #clrregoffset @ carrega 40 no registrador r0
+        MOV R2, #12 @ carrega 12 no registrador r2
+        MOV R1, \value @ carrega o valor passado para o pino no registrador r1
+        MUL R5, R2, R1 @ multiplica para obter 12 ou 0
+        SUB R0, R0, R5 @ subtrai o resultado do 40, resultando em 40 ou 28
+        MOV R2, R8 @ salva o valor do pino no r2
+        ADD R2, R2, R0 @ soma o valor do pino com o offset encontrado
+        MOV R0, #1 @ 1 bit para dar o shift para a posição
+        LDR R3, =\pin @ base das informações do pino
+        ADD R3, #8 @ informa o offset para fazer o shift
+        LDR R3, [R3] @ carrega o shift da tabela de informações
+        LSL R0, R3 @ realiza o shift
+        STR R0, [R2] @ escreve no registrador
 	nanoSleep timespecnano150
-.endm
-
-.macro startCounter
-	
 .endm
 
 _start:		
@@ -387,6 +380,7 @@ _start:
         MOVS R8, R0			@Armazena o endereço virtual em R8.
 
 
+	@ Acendimento de leds para sinalizar o início da execução 
 	GPIODirectionOut pin6
 	GPIOTurnOn pin6
 	nanoSleep timespecnano150
@@ -404,6 +398,7 @@ _start:
 	write9to0
 	.ltorg @Quando se tem um programa muito grande é necessário utilizar essa função para que o processador não tente executar funções indevidas
 
+	@ Acendimento de leds para sinalizar o final da execução 
 	GPIOTurnOn pin13
 	nanoSleep timespecnano150
 	GPIOTurnOff pin13
