@@ -71,198 +71,205 @@
         STR R0, [R2]
 .endm
 
+@Macro para realizar a inicialização do display LCD, juntamente com as functions set
 .macro initializeDisplay
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOff pin20
-	GPIOTurnOn pin16
-	GPIOTurnOn pin12
-	GPIOTurnOff pin1
-	nanoSleep timespecnano5
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOff pin20 @Off no DB6
+	GPIOTurnOn pin16 @On no DB5
+	GPIOTurnOn pin12 @On no DB4
+	GPIOTurnOff pin1 @Off no Enable
+	nanoSleep timespecnano5 @Temporização de 5 milisegundos
 
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOff pin20
-	GPIOTurnOn pin16
-	GPIOTurnOn pin12
-	GPIOTurnOff pin1
-	nanoSleep timespecnano150
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOff pin20 @Off no DB6
+	GPIOTurnOn pin16 @On no DB5
+	GPIOTurnOn pin12 @On no DB4
+	GPIOTurnOff pin1 @Off no Enable
+	nanoSleep timespecnano150 @Temporização de 15 milisegundos
 
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOff pin20
-	GPIOTurnOn pin16
-	GPIOTurnOn pin12
-	GPIOTurnOff pin1
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOff pin20 @Off no DB6
+	GPIOTurnOn pin16 @On no DB5
+	GPIOTurnOn pin12 @On no DB4
+	GPIOTurnOff pin1 @Off no Enable
 
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOff pin20
-	GPIOTurnOn pin16
-	GPIOTurnOff pin12
-	GPIOTurnOff pin1
-	nanoSleep timespecnano150
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOff pin20 @Off no DB6
+	GPIOTurnOn pin16 @On no DB5
+	GPIOTurnOff pin12 @Off no DB4
+	GPIOTurnOff pin1 @Off no Enable
+	nanoSleep timespecnano150 @Temporização de 15 milisegundos
 	
-	.ltorg
+	.ltorg @Quando se tem um programa muito grande é necessário utilizar essa função para que o processador não tente executar funções indevidas 
 
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOff pin20
-	GPIOTurnOn pin16
-	GPIOTurnOff pin12
-	GPIOTurnOff pin1
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOff pin20 @Off no DB6
+	GPIOTurnOn pin16 @On no DB5
+	GPIOTurnOff pin12 @Off no DB4
+	GPIOTurnOff pin1 @Off no Enable
 
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOff pin20
-	GPIOTurnOff pin16
-	GPIOTurnOff pin12
-	GPIOTurnOff pin1
-	nanoSleep timespecnano150
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOff pin20 @Off no DB6
+	GPIOTurnOff pin16 @Off no DB5
+	GPIOTurnOff pin12 @Off no DB4
+	GPIOTurnOff pin1 @Off no Enable
+	nanoSleep timespecnano150 @Temporização de 15 milisegundos
 	
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOff pin20
-	GPIOTurnOff pin16
-	GPIOTurnOff pin12
-	GPIOTurnOff pin1
+	@Parte da inicialização em que realiza um off no display
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOff pin20 @Off no DB6
+	GPIOTurnOff pin16 @Off no DB5
+	GPIOTurnOff pin12 @Off no DB4
+	GPIOTurnOff pin1 @Off no Enable
 
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOn pin21
-	GPIOTurnOff pin20
-	GPIOTurnOff pin16
-	GPIOTurnOff pin12
-	GPIOTurnOff pin1
-	nanoSleep timespecnano150
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOn pin21 @On no DB7
+	GPIOTurnOff pin20 @Off no DB6
+	GPIOTurnOff pin16 @Off no DB5
+	GPIOTurnOff pin12 @Off no DB4
+	GPIOTurnOff pin1 @Off no Enable
+	nanoSleep timespecnano150 @Temporização de 15 milisegundos
 
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOff pin20
-	GPIOTurnOff pin16
-	GPIOTurnOff pin12
-	GPIOTurnOff pin1
+	@Parte da inicialização em que realiza um clear no display
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOff pin20 @Off no DB6
+	GPIOTurnOff pin16 @Off no DB5
+	GPIOTurnOff pin12 @Off no DB4
+	GPIOTurnOff pin1 @Off no Enable
 
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOff pin20
-	GPIOTurnOff pin16
-	GPIOTurnOn pin12
-	GPIOTurnOff pin1
-	nanoSleep timespecnano150
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOff pin20 @Off no DB6
+	GPIOTurnOff pin16 @Off no DB5
+	GPIOTurnOn pin12 @On no DB4
+	GPIOTurnOff pin1 @Off no Enable
+	nanoSleep timespecnano150 @Temporização de 15 milisegundos
+	
+	@Parte da inicialização em que realiza o entry mode set no display
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOff pin20 @Off no DB6
+	GPIOTurnOff pin16 @Off no DB5
+	GPIOTurnOff pin12 @Off no DB4
+	GPIOTurnOff pin1 @Off no Enable
 
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOff pin20
-	GPIOTurnOff pin16
-	GPIOTurnOff pin12
-	GPIOTurnOff pin1
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOn pin20 @On no DB6
+	GPIOTurnOn pin16 @On no DB5
+	GPIOTurnOff pin12 @Off no DB4
+	GPIOTurnOff pin1 @Off no Enable
+	nanoSleep timespecnano150 @Temporização de 15 milisegundos
 
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOn pin20
-	GPIOTurnOn pin16
-	GPIOTurnOff pin12
-	GPIOTurnOff pin1
-	nanoSleep timespecnano150
-
-	.ltorg
+	.ltorg @Quando se tem um programa muito grande é necessário utilizar essa função para que o processador não tente executar funções indevidas
 .endm
 
+@Macro que chama a saída dos pinos do display
 .macro initPins
-	GPIODirectionOut pin1
-	GPIODirectionOut pin12
-	GPIODirectionOut pin16
-	GPIODirectionOut pin20
-	GPIODirectionOut pin21
-	GPIODirectionOut pin25
-	.ltorg
+	GPIODirectionOut pin1 @Enable
+	GPIODirectionOut pin12 @DB4
+	GPIODirectionOut pin16 @DB5
+	GPIODirectionOut pin20 @DB6
+	GPIODirectionOut pin21 @DB7
+	GPIODirectionOut pin25 @rs
+	.ltorg @Quando se tem um programa muito grande é necessário utilizar essa função para que o processador não tente executar funções indevidas 
 .endm
 
+@Macro que realiza o entry mode set do display
 .macro entryModeSet
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOff pin20
-	GPIOTurnOff pin16
-	GPIOTurnOff pin12
-	GPIOTurnOff pin1
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOff pin20 @Off no DB6
+	GPIOTurnOff pin16 @Off no DB5
+	GPIOTurnOff pin12 @Off no DB4
+	GPIOTurnOff pin1 @Off no Enable
 	
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOn pin21
-	GPIOTurnOn pin20
-	GPIOTurnOn pin16
-	GPIOTurnOff pin12
-	GPIOTurnOff pin1
-	nanoSleep timespecnano150
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOn pin21 @On no DB7
+	GPIOTurnOn pin20 @On no DB6
+	GPIOTurnOn pin16 @On no DB5
+	GPIOTurnOff pin12 @Off no DB4
+	GPIOTurnOff pin1 @Off no Enable
+	nanoSleep timespecnano150 @Temporização de 15 milisegundos
 
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOff pin20
-	GPIOTurnOff pin16
-	GPIOTurnOff pin12
-	GPIOTurnOff pin1
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOff pin20 @Off no DB6
+	GPIOTurnOff pin16 @Off no DB5
+	GPIOTurnOff pin12 @Off no DB4
+	GPIOTurnOff pin1 @Off no Enable
 
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOn pin20
-	GPIOTurnOn pin16
-	GPIOTurnOff pin12
-	GPIOTurnOff pin1
-	nanoSleep timespecnano150
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOn pin20 @On no DB6
+	GPIOTurnOn pin16 @On no DB5
+	GPIOTurnOff pin12 @Off no DB4
+	GPIOTurnOff pin1 @Off no Enable
+	nanoSleep timespecnano150 @Temporização de 15 milisegundos
 
-	.ltorg
+	.ltorg @Quando se tem um programa muito grande é necessário utilizar essa função para que o processador não tente executar funções indevidas
 .endm
 
+@Macro para realizar um clear no LCD
 .macro clearLCD
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOff pin20
-	GPIOTurnOff pin16
-	GPIOTurnOff pin12
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOff pin20 @Off no DB6
+	GPIOTurnOff pin16 @Off no DB5
+	GPIOTurnOff pin12 @Off no DB4
 	GPIOTurnOff pin1
 
-	GPIOTurnOff pin1
-	GPIOTurnOff pin25
-	GPIOTurnOn pin1
-	GPIOTurnOff pin21
-	GPIOTurnOff pin20
-	GPIOTurnOff pin16
-	GPIOTurnOn pin12
-	GPIOTurnOff pin1
-	nanoSleep timespecnano150
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOff pin20 @Off no DB6
+	GPIOTurnOff pin16 @Off no DB5
+	GPIOTurnOn pin12 @On no DB4
+	GPIOTurnOff pin1 @Off no Enable
+	nanoSleep timespecnano150 @Temporização de 15 milisegundos
 .endm
 
 .macro writeDezena
@@ -336,7 +343,7 @@
 	GPIOTurnOnOff pin12, #\d4
 	GPIOTurnOff pin1
 	nanoSleep timespecnano150
-	.ltorg
+	.ltorg @Quando se tem um programa muito grande é necessário utilizar essa função para que o processador não tente executar funções indevidas
 .endm
 
 .macro GPIOTurnOnOff pin, value
@@ -389,13 +396,13 @@ _start:
 	nanoSleep timespecnano150
 	GPIOTurnOff pin13
 
-	initPins
-	initializeDisplay
-	entryModeSet
+	initPins @chamando a macro para inicializar os pinos do display
+	initializeDisplay @chamando a macro para inicializar o display
+	entryModeSet @chamando a macro para realizar o entry mode set
 
-	clearLCD
+	clearLCD @chamando a macro para limpar o display
 	write9to0
-	.ltorg
+	.ltorg @Quando se tem um programa muito grande é necessário utilizar essa função para que o processador não tente executar funções indevidas
 
 	GPIOTurnOn pin13
 	nanoSleep timespecnano150
