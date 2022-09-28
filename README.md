@@ -6,8 +6,20 @@ Com o avanço da tecnologia, inclusive a de construção de transistores, tem si
 
 O problema apresentado a seguir consistiu no desenvolvimento de um temporizador em um microcontrolador Raspberry Pi Zero, utilizando uma linguagem de montagem com arquitetura ARM. O temporizador deve contar com funções básicas de controle do tempo, sendo possível parar e iniciar a temporização, assim como reiniciá-la a partir do tempo inicial.
 
-# 2 - Desenvolvimento
-**2.1 - Nanosleep:**
+# 2 - Ambiente e Ferramentas
+## 2.1 - Ambiente
+
+O problema foi desenvolvido para funcionar em uma Raspberry Pi Zero, utilizando como periférico de saída um display LCD Hitachi HD44780U (LCD-II) de 16x2. Essa Raspberry possui arquitetura ARMv6 de 32bits.
+
+Para a ambientação com linguagem de montagem, foi utilizada a plataforma web CPULator na versão de arquitetura ARMv7.
+
+Para a emulação do código fora do laboratório, foi utilizado o software QEMU, usando o kernel 4.4.34-jessie e com uma imagem raspbian-jessie para o sistema operacional, ambos disponíveis nesse repositório.
+## 2.2 - Outras Ferramentas
+
+Para desenvolvimento do código foram utilizados diferentes editores de texto, como o GNU Nano e o Visual Studio Code.
+
+# 3 - Desenvolvimento
+**3.1 - Nanosleep:**
 
 ![image](https://user-images.githubusercontent.com/111393549/192642333-7be43a3a-f703-4d4c-9fa9-4c0f6ae628f9.png)
 
@@ -18,7 +30,7 @@ O macro em questão é utilizado para fazer o sistema “dormir” durante um te
 Depois é enviado ao R7 o valor da syscall(162), que é executada em seguida.
 O `nanosleep` é vital para o funcionamento do display, que precisa de delays específicos entre os conjuntos de instruções.
 
-**2.2 - Usando um pino como output:**
+**3.2 - Usando um pino como output:**
 
 ![image](https://user-images.githubusercontent.com/111393549/192646024-306637d8-7783-4c63-8402-9833781490a1.png)
 
@@ -27,13 +39,13 @@ Quando um pino é usado, devemos informar se ele vai servir como entrada ou saí
 - Passamos a posição do primeiro bit reservado para o pino(cada FSEL é responsável por 10 pinos com 3 bits para cada),
 - Fazemos um Shift para a posição correta(com base no valor passado), e salvamos o resultado em um registrador.
 
-**2.3 - Ativando um pino:**
+**3.3 - Ativando um pino:**
 
 ![image](https://user-images.githubusercontent.com/111393549/192645909-fc9caecf-305b-4c4a-9049-be2b6688e4a0.png)
 
 Após um pino ter sua função definida, ele vai ser ligado de acordo com a necessidade do projeto, seguindo a lógica da macro `GPIODirectionOut`,  começamos passando o endereço armazenado no R8, depois passamos o offset do registrador set1(a diferença entre ligar e desligar o pino é basicamente o offset enviado, set para ligar, e clear para desligar).
 
-**2.4 - Abrindo arquivos e mapeando a memória:**
+**3.4 - Abrindo arquivos e mapeando a memória:**
 
 ![image](https://user-images.githubusercontent.com/111393549/192645367-82ef86f6-05c9-41ea-ac0e-046159c400fb.png)
 
@@ -57,7 +69,7 @@ No código acima enviamos um "1" para o `DB4` e para o `DB5`, depois é estabele
 - Em cada grupo de instruções, definimos quais data bits do display recebem 0 ou 1, isso é feito seguindo a ordem definida no datasheet.
 - O processo se repete algumas vezes, mas com valores diferentes em cada `Data Bit`.
 
-**2.5 - Iniciando a contagem:**
+**3.5 - Iniciando a contagem:**
 Depois que o display for inicializado começamos a contagem de 9 a 0, para isso utilizamos o macro `write9to0` : 
 
 ![image](https://user-images.githubusercontent.com/111393549/192651194-2a7c4ab5-515b-40d2-8815-1d681d8bc9c0.png)
@@ -73,7 +85,7 @@ A imagem acima representa o envio dos valores aos lower bits.
 
 
 
-**2.x - GPIO pins:**
+**3.x - GPIO pins:**
 
 ![image](https://user-images.githubusercontent.com/111393549/192644893-8dda5069-05aa-4af8-bc33-900e7e52dc03.png)
 
