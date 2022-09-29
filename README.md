@@ -84,13 +84,26 @@ A escrita de dados no display é feita através de um grupo de instruções onde
 A imagem acima representa o envio dos valores aos lower bits.
 
 
-
-**3.x - GPIO pins:**
+**3.6 - GPIO pins:**
 
 ![image](https://user-images.githubusercontent.com/111393549/192644893-8dda5069-05aa-4af8-bc33-900e7e52dc03.png)
 
 Nós acessamos os periféricos da placa através da GPIO(General purpose input output), mas para que os pinos utilizados funcionem, é necessário valores especificos, usando o `pin25`(RS) como exemplo , associamos ao `pin25` os valores "8" para utilizarmos o GPSEL2 que controla os pinos 20-29, depois enviamos
 um "15", que representa o primeiro dos três bits do pin25 (são 32 bits para o GPSEL2, sendo três para cada pino controlado).
+
+**3.7 - Tipos de instruções utilizadas:**
+
+**Aritimética:**
+- `ADD`
+- `SUB`
+
+**Manipulação/movimentação:**
+- `LSL`
+- `ORR`
+- `BIC`
+- `MOV`
+- `STR`
+- `LDR`
 
 
 
