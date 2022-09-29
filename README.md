@@ -82,7 +82,26 @@ Após um pino ter sua função definida, ele vai ser ligado de acordo com a nece
 
 **3.4 - Abrindo arquivos e mapeando a memória:**
 
-![image](https://user-images.githubusercontent.com/111393549/192645367-82ef86f6-05c9-41ea-ac0e-046159c400fb.png)
+```s
+_start:		
+        LDR R0, = fileName		@Carrega o endereço.
+        MOV R1, #0x1b0			@Parâmetro para o sys_open.
+        ORR R1, #0x006			@Parâmetro para o sys_open.
+        MOV R2, R1			@Passando valor retornado para R2.
+        MOV R7, #sys_open		@Passa o valor de sys_open para o r7.
+        SVC 0				@Executa a syscall.
+        MOVS R4, R0			@Armazena o endereço no R4.
+	
+        LDR R5, =gpioaddr		@Carrega o endereço.
+        LDR R5, [R5]		
+        MOV R1, #pagelen	        @passa o valor maximo da memória.
+        MOV R2, #(prot_read + prot_write)	@Parâmetro para escrita e leitura de arquivos.
+        MOV R3, #map_shared		@Parâmetro para que outros processos saibam que a região esta sendo mapeada.
+        MOV R0, #0			@Deixa o SO escolher o endereço virtual.
+        MOV R7, #sys_map		@Passa o valor da syscall para R7.
+        SVC 0				@Executa o mapeamento.
+        MOVS R8, R0			@Armazena o endereço virtual em R8.
+```
 
 Assim que o programa inicia realizamos o mapeamento de memória, onde recebemos um endereço virtual(com base no endereço físico) para os componentes que vão ser utilizados : 
 1. A princípio acessamos o diretório “dev/mem” utilizando a syscall `sys_open` (os valores carregados nos registradores servem como parâmetros para encontrar o endereço correto, depois o `SVC 0` executa a syscall.
