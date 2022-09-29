@@ -93,17 +93,18 @@ um "15", que representa o primeiro dos três bits do pin25 (são 32 bits para o 
 
 **3.7 - Tipos de instruções utilizadas:**
 
-**Aritimética:**
+**Aritmética:**
 - `ADD`
 - `SUB`
 
 **Manipulação/movimentação:**
 - `LSL`
-- `ORR`
-- `BIC`
 - `MOV`
 - `STR`
 - `LDR`
 
+**Aritmética:**
+- `ORR`
+- `BIC`
 
 
