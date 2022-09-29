@@ -21,8 +21,6 @@ Para desenvolvimento do código foram utilizados diferentes editores de texto, c
 # 3 - Desenvolvimento
 **3.1 - Nanosleep:**
 
-![image](https://user-images.githubusercontent.com/111393549/192642333-7be43a3a-f703-4d4c-9fa9-4c0f6ae628f9.png)
-
 ```s
 .macro nanoSleep time		@Macro responsavel por definir um intervalo de tempo
         LDR R0,=timespecsec	@Parâmetro fixo para o nano_sleep.
@@ -41,7 +39,23 @@ O `nanosleep` é vital para o funcionamento do display, que precisa de delays es
 
 **3.2 - Usando um pino como output:**
 
-![image](https://user-images.githubusercontent.com/111393549/192646024-306637d8-7783-4c63-8402-9833781490a1.png)
+```s
+.macro GPIODirectionOut pin
+        LDR R2, =\pin 	@ endereço das informações do pino
+        LDR R2, [R2]
+        LDR R1, [R8, R2]
+        LDR R3, =\pin 	@ endereço das informações do pino
+        ADD R3, #4 	@ tamanho do shift nas informações
+        LDR R3, [R3] 	@ carrega o valor do shift
+        MOV R0, #0b111 	@ limpa 3 bits
+        LSL R0, R3 	@ dá um shift para a posição
+        BIC R1, R0 	@ limpa os 3 bits
+        MOV R0, #1 	@ 1 bit to shift into pos
+        LSL R0, R3 	@ dá um shift para a posição
+        ORR R1, R0 	@ seta o bit
+        STR R1, [R8, R2] @ salva no registrador para utilização
+.endm
+```
 
 Quando um pino é usado, devemos informar se ele vai servir como entrada ou saída, na imagem o pino é setado como output :
 - Informamos o endereço base do pino(com base no FSEL referente no datasheet)
@@ -50,7 +64,19 @@ Quando um pino é usado, devemos informar se ele vai servir como entrada ou saí
 
 **3.3 - Ativando um pino:**
 
-![image](https://user-images.githubusercontent.com/111393549/192645909-fc9caecf-305b-4c4a-9049-be2b6688e4a0.png)
+```s
+.macro GPIOTurnOn pin, value
+        MOV R2, R8 	@ endereço do mapeamento
+        ADD R2, #setregoffset @ offset necessário nos registradores
+        MOV R0, #1 	@ 1 bit para dar o shift para a posição
+        LDR R3, =\pin 	@ base da tabela de informações do pino
+        ADD R3, #8 	@ offset para o shift
+        LDR R3, [R3] 	@ carrega o valor do shift da tabela
+        LSL R0, R3 	@ realiza o shift
+        STR R0, [R2] 	@ escreve no registrador
+	nanoSleep timespecnano150
+.endm
+```
 
 Após um pino ter sua função definida, ele vai ser ligado de acordo com a necessidade do projeto, seguindo a lógica da macro `GPIODirectionOut`,  começamos passando o endereço armazenado no R8, depois passamos o offset do registrador set1(a diferença entre ligar e desligar o pino é basicamente o offset enviado, set para ligar, e clear para desligar).
 
