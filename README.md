@@ -226,7 +226,17 @@ um "15", que representa o primeiro dos três bits do pin25 (são 32 bits para o 
 - `ORR`
 - `BIC`
 
-# 4 - Referências
+# 4 - Testes de Funcionamento 
+## 1º Teste: 
+Para a testagem do mapeamento realizado foi utilizado um componente LED, para caso o mapeamento correto, executaria o código em que o LED acende e, após um segundo, ele apagar.
+
+## 2º Teste: 
+Após verificar o mapeamento com o LED, testamos o Display de LCD, para isso foi utilizadu a exibição de uma letra e de caracteres diversos para verificar o funcionamento.
+
+## 3º Teste:
+No terceiro teste foi realizado a contagem de 9 a 0 para exibição no display, utilizando somente uma casa decimal em que após a exibição de um caractere, ele é apagado e o próximo é exibido.
+
+# 5 - Referências
 ![Raspberry Pi Assembly Language Programming](https://link.springer.com/book/10.1007/978-1-4842-5287-1)
 
 ![Manual Display HD44780U (LCD-16x2)](https://www.sparkfun.com/datasheets/LCD/HD44780.pdf)
