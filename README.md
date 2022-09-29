@@ -23,6 +23,15 @@ Para desenvolvimento do código foram utilizados diferentes editores de texto, c
 
 ![image](https://user-images.githubusercontent.com/111393549/192642333-7be43a3a-f703-4d4c-9fa9-4c0f6ae628f9.png)
 
+```s
+.macro nanoSleep time		@Macro responsavel por definir um intervalo de tempo
+        LDR R0,=timespecsec	@Parâmetro fixo para o nano_sleep.
+        LDR R1,=\time		@Parâmetro que define o tempo do delay.
+        MOV R7, #nano_sleep	@Passa o valor da sys_map para o R7(registrador para chamada de sycalls).
+        SVC 0			@Executa a syscall.
+.endm
+```
+
 O macro em questão é utilizado para fazer o sistema “dormir” durante um tempo pré-determinado sempre que existir a necessidade de esperar um intervalo específico entre instruções, são passados dois argumentos para o macro : 
 - `timespecsec` que é um valor fixo.
 - `time` que define quanto tempo a execução fica em espera.
