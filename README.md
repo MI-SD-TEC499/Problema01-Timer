@@ -103,7 +103,7 @@ um "15", que representa o primeiro dos três bits do pin25 (são 32 bits para o 
 - `STR`
 - `LDR`
 
-**Aritmética:**
+**Lógica:**
 - `ORR`
 - `BIC`
 
