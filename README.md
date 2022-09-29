@@ -109,7 +109,17 @@ Assim que o programa inicia realizamos o mapeamento de memória, onde recebemos 
 
 Com a memória mapeada, começamos a preparação do display:
 1. Inicializando os pinos (setando como output):
-![image](https://user-images.githubusercontent.com/111393549/192648400-889c5f0a-a32f-4e84-950b-e3150636cef7.png)
+```s
+.macro initPins
+	GPIODirectionOut pin1 @Enable
+	GPIODirectionOut pin12 @DB4
+	GPIODirectionOut pin16 @DB5
+	GPIODirectionOut pin20 @DB6
+	GPIODirectionOut pin21 @DB7
+	GPIODirectionOut pin25 @rs
+	.ltorg @Quando se tem um programa muito grande é necessário utilizar essa função para que o processador não tente executar funções indevidas 
+.endm
+```
 
 
 
@@ -117,7 +127,18 @@ Com a memória mapeada, começamos a preparação do display:
 Antes de começar a escrever no display, devemos inicializa-lo através de instruções.
 - O método se resume em enviar um instruction set, e esperar um tempo especifico:
 
-![image](https://user-images.githubusercontent.com/111393549/192655249-ec1335f6-a5ab-4932-a851-451985cc9ea0.png)
+```s
+.macro initializeDisplay
+	GPIOTurnOff pin1 @Off no Enable
+	GPIOTurnOff pin25 @Off no rs
+	GPIOTurnOn pin1 @On no Enable
+	GPIOTurnOff pin21 @Off no DB7
+	GPIOTurnOff pin20 @Off no DB6
+	GPIOTurnOn pin16 @On no DB5
+	GPIOTurnOn pin12 @On no DB4
+	GPIOTurnOff pin1 @Off no Enable
+	nanoSleep timespecnano5 @Temporização de 5 milisegundos
+```
 
 No código acima enviamos um "1" para o `DB4` e para o `DB5`, depois é estabelecido um delay de 5 nanosegundos.
 - Em cada grupo de instruções, definimos quais data bits do display recebem 0 ou 1, isso é feito seguindo a ordem definida no datasheet.
@@ -126,21 +147,65 @@ No código acima enviamos um "1" para o `DB4` e para o `DB5`, depois é estabele
 **3.5 - Iniciando a contagem:**
 Depois que o display for inicializado começamos a contagem de 9 a 0, para isso utilizamos o macro `write9to0` : 
 
-![image](https://user-images.githubusercontent.com/111393549/192651194-2a7c4ab5-515b-40d2-8815-1d681d8bc9c0.png)
+```s
+.macro write9to0
+	writeDecimal 1, 0, 0, 1 @ escreve o 9
+
+	writeDecimal 1, 0, 0, 0 @ escreve o 8
+
+	writeDecimal 0, 1, 1, 1 @ escreve o 7
+
+	writeDecimal 0, 1, 1, 0 @ escreve o 6
+
+	writeDecimal 0, 1, 0, 1 @ escreve o 5
+
+	writeDecimal 0, 1, 0, 0 @ escreve o 4
+
+	writeDecimal 0, 0, 1, 1 @ escreve o 3
+
+	writeDecimal 0, 0, 1, 0 @ escreve o 2
+
+	writeDecimal 0, 0, 0, 1 @ escreve o 1
+
+	writeDecimal 0, 0, 0, 0 @ escreve o 0
+.endm
+```
 
 A escrita de dados no display é feita através de um grupo de instruções onde informamos o valor passado a cada data bit(similar a inicialização do display), são dois instruction sets seguindo a ordem informada no datasheet do display, para escrever o numero 5 por exemplo :
 1. Enviamos um 0011(`DB7,DB6,DB5,DB4` respectivamente) para os upper bits
 2. 0101 para os lower bits.
 3. Por fim um pulso no enable. 
 
-![image](https://user-images.githubusercontent.com/111393549/192658064-afc0256b-25c4-46d8-8e00-fac44e20342b.png)
+```s
+.macro writeDecimal d7, d6, d5, d4
+	writeNumber @ macro que envia os bits de escrita de números
+
+	GPIOTurnOff pin1 	@ Off no enable
+	GPIOTurnOn pin25 	@ On no RS para escrita de dado
+	GPIOTurnOn pin1 	@ On no enable para o pulso
+	GPIOTurnOnOff pin21, #\d7 @ passa o valor para o DB7
+	GPIOTurnOnOff pin20, #\d6 @ passa o valor para o DB6
+	GPIOTurnOnOff pin16, #\d5 @ passa o valor para o DB5
+	GPIOTurnOnOff pin12, #\d4 @ passa o valor para o DB4
+	GPIOTurnOff pin1 	@ Off no enable para enviar os dados
+	nanoSleep timespecnano150
+	.ltorg @Quando se tem um programa muito grande é necessário utilizar essa função para que o processador não tente executar funções indevidas
+.endm
+```
 
 A imagem acima representa o envio dos valores aos lower bits.
 
 
 **3.6 - GPIO pins:**
 
-![image](https://user-images.githubusercontent.com/111393549/192644893-8dda5069-05aa-4af8-bc33-900e7e52dc03.png)
+```s
+pin25:	.word 8    	 @RS
+	.word 15
+	.word 25
+pin1:	.word 0    	@E
+	.word 3
+	.word 1
+```
 
 Nós acessamos os periféricos da placa através da GPIO(General purpose input output), mas para que os pinos utilizados funcionem, é necessário valores especificos, usando o `pin25`(RS) como exemplo , associamos ao `pin25` os valores "8" para utilizarmos o GPSEL2 que controla os pinos 20-29, depois enviamos
 um "15", que representa o primeiro dos três bits do pin25 (são 32 bits para o GPSEL2, sendo três para cada pino controlado).
