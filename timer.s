@@ -404,9 +404,6 @@ _start:
 	GPIOTurnOff pin13
 	clearLCD
 
-	writeDezena
-	clearLCD
-
 _end:   MOV R0, #0
         MOV R7, #1
         SVC 0
