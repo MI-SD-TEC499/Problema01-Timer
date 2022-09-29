@@ -215,10 +215,11 @@ um "15", que representa o primeiro dos três bits do pin25 (são 32 bits para o 
 **Aritmética:**
 - `ADD`
 - `SUB`
+- `MUL`
 
 **Manipulação/movimentação:**
 - `LSL`
-- `MOV`
+- `MOV` , `MOVS`
 - `STR`
 - `LDR`
 
